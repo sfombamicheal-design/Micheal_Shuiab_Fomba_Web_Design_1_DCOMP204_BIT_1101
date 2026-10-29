@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentStay - Accommodation Details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 1.25rem;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #3498db;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 40px 20px;
+        }
+
+        .page-tracker {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-bottom: 20px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+        }
+
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .main-img {
+            width: 100%;
+            height: 380px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .main-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .thumb {
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .thumb:hover, .thumb.active {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .features-box {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            margin-top: 20px;
+        }
+
+        .features-box h3 {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .features-box ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            color: #4a5568;
+            font-size: 0.95rem;
+        }
+
+        .features-box li::before {
+            content: "✓ ";
+            color: #3182ce;
+            font-weight: bold;
+        }
+
+        .info-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .property-title-area h1 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .property-title-area p {
+            color: #718096;
+            font-size: 1rem;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .spec-item span {
+            display: block;
+            font-size: 0.8rem;
+            color: #a0aec0;
+            margin-bottom: 3px;
+        }
+
+        .spec-item strong {
+            font-size: 0.95rem;
+            color: #2d3748;
+        }
+
+        .facilities-section h3 {
+            font-size: 1.05rem;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .facilities-icons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .facility-badge {
+            background: #edf2f7;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .description-section h3 {
+            font-size: 1.05rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .description-section p {
+            color: #4a5568;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #2b6cb0;
+        }
+
+        .btn-secondary {
+            background-color: #edf2f7;
+            color: #4a5568;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #718096;
+        }
+
+        @media (max-width: 900px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">StudentStay</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="accommodation.html">Accommodation</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-tracker">Accommodation Details Page</div>
+
+        <div class="details-grid">
+            <!-- Left Column: Gallery & Key Features -->
+            <div class="gallery-container">
+                <div class="main-img">
+                    <img src="images/campus-view.jpg" alt="Campus View Hostel Main Image">
+                </div>
+                <div class="thumbnail-row">
+                    <div class="thumb active"><img src="images/campus-view.jpg" alt="Thumb 1"></div>
+                    <div class="thumb"><img src="images/hero-room.jpg" alt="Thumb 2"></div>
+                    <div class="thumb"><img src="images/green-residence.jpg" alt="Thumb 3"></div>
+                    <div class="thumb"><img src="images/student-lodge.jpg" alt="Thumb 4"></div>
+                </div>
+
+                <div class="features-box">
+                    <h3>Key Features</h3>
+                    <ul>
+                        <li>Spacious and comfortable</li>
+                        <li>Quiet environment</li>
+                        <li>Clean and modern rooms</li>
+                        <li>Reliable water and electricity supply</li>
+                        <li>Regular maintenance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Column: Information & Actions -->
+            <div class="info-card">
+                <div class="property-title-area">
+                    <h1>Campus View Hostel</h1>
+                    <p>Freetown, Sierra Leone</p>
+                </div>
+
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <span>Room Type</span>
+                        <strong>Single Room</strong>
+                    </div>
+                    <div class="spec-item">
+                        <span>Accommodation</span>
+                        <strong>Hostel</strong>
+                    </div>
+                    <div class="spec-item">
+                        <span>Rating</span>
+                        <strong>4.5 (12 reviewers)</strong>
+                    </div>
+                </div>
+
+                <div class="facilities-section">
+                    <h3>Facilities</h3>
+                    <div class="facilities-icons">
+                        <span class="facility-badge">Wi-Fi</span>
+                        <span class="facility-badge">Water Supply</span>
+                        <span class="facility-badge">Electricity</span>
+                        <span class="facility-badge">Security</span>
+                        <span class="facility-badge">Laundry</span>
+                    </div>
+                </div>
+
+                <div class="description-section">
+                    <h3>About This Accommodation</h3>
+                    <p>Campus View Hostel offers a safe, comfortable, and affordable living environment for students in Freetown. It is located close to the university, making it easy to attend classes and access nearby shops, restaurants, and other essential services. The hostel provides clean rooms, good security, and a peaceful atmosphere, perfect for focused study and a better student experience.</p>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="#" class="btn-primary">Book Accommodation</a>
+                    <a href="accommodation.html" class="btn-secondary">Back to Listings</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <span>StudentStay</span>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="accommodation.html">Accommodation</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>
